@@ -20,7 +20,80 @@ from supabase import create_client
 
 TABLE_NAME = "split_results"
 
-st.set_page_config(page_title="Monitoring Klaim - Hasil Split", layout="wide")
+st.set_page_config(page_title="Monitoring Klaim - Hasil Split", layout="wide", page_icon="📊")
+
+# ─────────────────────────────────────────────
+# Custom styling - tema merah
+# ─────────────────────────────────────────────
+st.markdown("""
+<style>
+    .main-header {
+        background: linear-gradient(135deg, #E30613 0%, #B00410 100%);
+        padding: 24px 32px;
+        border-radius: 10px;
+        margin-bottom: 24px;
+        box-shadow: 0 4px 12px rgba(227, 6, 19, 0.25);
+    }
+    .main-header h1 {
+        color: white;
+        margin: 0;
+        font-size: 28px;
+    }
+    .main-header p {
+        color: #FFE5E5;
+        margin: 4px 0 0 0;
+        font-size: 14px;
+    }
+    div[data-testid="stMetric"] {
+        background-color: #FFF1F1;
+        border: 1px solid #F5B5B8;
+        border-left: 5px solid #E30613;
+        border-radius: 8px;
+        padding: 14px 16px;
+    }
+    div[data-testid="stMetricValue"] {
+        color: #B00410;
+    }
+    .styled-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .styled-table thead tr {
+        background-color: #E30613;
+        color: white;
+        text-align: left;
+    }
+    .styled-table th, .styled-table td {
+        padding: 10px 14px;
+        border: 1px solid #F0D0D0;
+    }
+    .styled-table tbody tr:nth-child(even) {
+        background-color: #FFF6F6;
+    }
+    .styled-table tbody tr:hover {
+        background-color: #FFE0E0;
+    }
+    .styled-table a {
+        color: #B00410;
+        font-weight: 600;
+        text-decoration: none;
+    }
+    .styled-table a:hover {
+        text-decoration: underline;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<div class="main-header">
+    <h1>📊 Monitoring Klaim - Hasil Split per Principal</h1>
+    <p>Data diperbarui otomatis setiap proses split dijalankan</p>
+</div>
+""", unsafe_allow_html=True)
 
 
 # ─────────────────────────────────────────────
@@ -49,8 +122,6 @@ def get_download_url(file_path: str) -> str:
 # ─────────────────────────────────────────────
 # UI
 # ─────────────────────────────────────────────
-st.title("📊 Monitoring Klaim - Hasil Split per Principal")
-
 data = load_data()
 
 if not data:
@@ -106,22 +177,37 @@ else:
     # Urutkan biar rapi: tahun desc, principal, tipe
     filtered.sort(key=lambda r: (r["tahun"], r["principal"], r["tipe"]), reverse=True)
 
-    header = st.columns([1, 2, 3, 2, 2, 2])
-    header[0].markdown("**Tahun**")
-    header[1].markdown("**Principal**")
-    header[2].markdown("**Tipe (sheet)**")
-    header[3].markdown("**Jumlah Baris**")
-    header[4].markdown("**Jumlah SALAH**")
-    header[5].markdown("**File**")
-
+    rows_html = ""
     for row in filtered:
-        c = st.columns([1, 2, 3, 2, 2, 2])
-        c[0].write(row["tahun"])
-        c[1].write(row["principal"])
-        c[2].write(row["tipe"])
-        c[3].write(f"{row['jumlah_baris']:,}")
-        c[4].write(f"{row['jumlah_salah']:,}")
         url = get_download_url(row["file_path"])
-        c[5].markdown(f"[⬇ {row['file_name']}]({url})")
+        rows_html += f"""
+        <tr>
+            <td>{row['tahun']}</td>
+            <td>{row['principal']}</td>
+            <td>{row['tipe']}</td>
+            <td>{row['jumlah_baris']:,}</td>
+            <td>{row['jumlah_salah']:,}</td>
+            <td><a href="{url}" target="_blank">⬇ {row['file_name']}</a></td>
+        </tr>
+        """
+
+    table_html = f"""
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Tahun</th>
+                <th>Principal</th>
+                <th>Tipe (sheet)</th>
+                <th>Jumlah Baris</th>
+                <th>Jumlah SALAH</th>
+                <th>File</th>
+            </tr>
+        </thead>
+        <tbody>
+            {rows_html}
+        </tbody>
+    </table>
+    """
+    st.markdown(table_html, unsafe_allow_html=True)
 
 st.caption("Data otomatis diperbarui setiap kali JALANKAN_SPLIT.bat dijalankan di sisi lokal.")
