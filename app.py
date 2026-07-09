@@ -88,9 +88,11 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("""
+LOGO_URL = "https://raw.githubusercontent.com/otcarklaim/monitoring-claim/main/PT-Pinus-Merah-Abadi-removebg-preview.png"
+
+st.markdown(f"""
 <div class="main-header">
-    <h1>📊 Monitoring Klaim - Hasil Split per Principal</h1>
+    <h1><img src="{LOGO_URL}" style="height:40px; vertical-align:middle; margin-right:12px; border-radius:4px;">Monitoring Klaim - Hasil Split per Principal</h1>
     <p>Data diperbarui otomatis setiap proses split dijalankan</p>
 </div>
 """, unsafe_allow_html=True)
