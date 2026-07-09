@@ -92,7 +92,7 @@ LOGO_URL = "https://cdn.jsdelivr.net/gh/otcarklaim/monitoring-claim@main/logo.pn
 
 st.markdown(f"""
 <div class="main-header">
-    <h1><img src="{LOGO_URL}" style="height:70px; vertical-align:middle; margin-right:14px;">Monitoring Klaim - Hasil Split per Principal</h1>
+    <h1 style="display:flex; align-items:center;"><img src="{LOGO_URL}" style="height:210px; margin-right:4px;">Monitoring Klaim - Hasil Split per Principal</h1>
     <p>Data diperbarui otomatis setiap proses split dijalankan</p>
 </div>
 """, unsafe_allow_html=True)
