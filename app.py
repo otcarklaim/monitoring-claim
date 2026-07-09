@@ -88,7 +88,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-LOGO_URL = "https://raw.githubusercontent.com/otcarklaim/monitoring-claim/main/PT-Pinus-Merah-Abadi-removebg-preview.png"
+LOGO_URL = "https://cdn.jsdelivr.net/gh/otcarklaim/monitoring-claim@main/logo.png"
 
 st.markdown(f"""
 <div class="main-header">
