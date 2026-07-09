@@ -180,34 +180,26 @@ else:
     rows_html = ""
     for row in filtered:
         url = get_download_url(row["file_path"])
-        rows_html += f"""
-        <tr>
-            <td>{row['tahun']}</td>
-            <td>{row['principal']}</td>
-            <td>{row['tipe']}</td>
-            <td>{row['jumlah_baris']:,}</td>
-            <td>{row['jumlah_salah']:,}</td>
-            <td><a href="{url}" target="_blank">⬇ {row['file_name']}</a></td>
-        </tr>
-        """
+        rows_html += (
+            "<tr>"
+            f"<td>{row['tahun']}</td>"
+            f"<td>{row['principal']}</td>"
+            f"<td>{row['tipe']}</td>"
+            f"<td>{row['jumlah_baris']:,}</td>"
+            f"<td>{row['jumlah_salah']:,}</td>"
+            f'<td><a href="{url}" target="_blank">⬇ {row["file_name"]}</a></td>'
+            "</tr>"
+        )
 
-    table_html = f"""
-    <table class="styled-table">
-        <thead>
-            <tr>
-                <th>Tahun</th>
-                <th>Principal</th>
-                <th>Tipe (sheet)</th>
-                <th>Jumlah Baris</th>
-                <th>Jumlah SALAH</th>
-                <th>File</th>
-            </tr>
-        </thead>
-        <tbody>
-            {rows_html}
-        </tbody>
-    </table>
-    """
+    table_html = (
+        '<table class="styled-table">'
+        "<thead><tr>"
+        "<th>Tahun</th><th>Principal</th><th>Tipe (sheet)</th>"
+        "<th>Jumlah Baris</th><th>Jumlah SALAH</th><th>File</th>"
+        "</tr></thead>"
+        f"<tbody>{rows_html}</tbody>"
+        "</table>"
+    )
     st.markdown(table_html, unsafe_allow_html=True)
 
 st.caption("Data otomatis diperbarui setiap kali JALANKAN_SPLIT.bat dijalankan di sisi lokal.")
